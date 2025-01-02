@@ -56,18 +56,51 @@ class ExpenseDataBase:
     def to_dict(self):
         return [expense.to_dict() for expense in self.expenses]
 
-class 
+class ExpenseTracker(ExpenseDataBase):
+    def __init__(self):
+        super().__init__()
 
+    def track_expenses(self, days):
+        print(f"Tracking expenses for {days} days.")
+        for day in range(1, days + 1):
+            print(f"\nDay {day}")
+            while True:
+                title = input("Enter the expense title (or type 'done' to finish for the day): ")
+                if title.lower() == 'done':
+                    break
+                try:
+                    amount = float(input(f"Enter the amount for '{title}': "))
+                    expense = Expense(title=title, amount=amount)
+                    self.add_expense(expense)
+                except ValueError:
+                    print("Invalid amount. Please try again.")
 
-# implementation for user input processing 
-    def main():
-        print("$$Python Expense Tracker$$")
-        user_name=input("Enter your name:")
-        days_expense_track=int(input("Enter the number of days to record expenses:"))
+    def display_expenses(self):
+        if not self.expenses:
+            print("No expenses recorded.")
+        else:
+            print("\nExpenses:")
+            for expense in self.expenses:
+                print(f"- {expense.title}: ${expense.amount:.2f} (ID: {expense.id})")
 
-        expense_db=ExpenseDataBase()
+# Main function for user input processing
+def main():
+    print("$$$$$$ Python Expense Tracker $$$$$$")
+    user_name = input("Enter your name: ")
+    print(f"Welcome, {user_name}!")
 
+    try:
+        days_expense_track = int(input("Enter the number of days to record expenses: "))
+        if days_expense_track <= 0:
+            print("Number of days must be greater than 0.")
+            return
+    except ValueError:
+        print("Invalid input for number of days.")
+        return
 
+    tracker = ExpenseTracker()
+    tracker.track_expenses(days_expense_track)
+    tracker.display_expenses()
 
 if __name__ == "__main__":
-
+    main()
